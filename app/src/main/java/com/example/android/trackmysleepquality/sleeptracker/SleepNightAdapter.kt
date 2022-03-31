@@ -23,8 +23,8 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
 
         fun bind(item: SleepNight) {
             val res = itemView.context.resources
-            binding.sleepLength.text =
-                convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
+            //binding.sleepLength.text =
+                //convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
             binding.qualityString.text = convertNumericQualityToString(item.sleepQuality, res)
             binding.qualityImage.setImageResource(
                 when (item.sleepQuality) {
