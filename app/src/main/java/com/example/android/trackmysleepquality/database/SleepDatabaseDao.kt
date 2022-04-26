@@ -34,15 +34,19 @@ import androidx.room.Update
 Удалите все записи в базе данных.*/
 
 @Dao
-interface SleepDatabaseDao{
+interface SleepDatabaseDao {
     @Insert
-   suspend fun insert(night: SleepNight)
+    suspend fun insert(night: SleepNight)
 
     @Update
     suspend fun update(night: SleepNight)
 
+    @Query("SELECT * from daily_sleep_quality_table WHERE nightId = :key")
+    fun getNightWithId(key: Long): LiveData<SleepNight>
+
     @Query("SELECT * from daily_sleep_quality_table WHERE nightId = :key") // daily_sleep_quality_table
     suspend fun get(key: Long): SleepNight?
+
 
     /* @Delete Аннотация удаляет один элемент, и вы можете использовать @Delete и предоставить список ночей для удаления.
      Недостатком является то, что вам нужно получить или узнать, что находится в таблице.
