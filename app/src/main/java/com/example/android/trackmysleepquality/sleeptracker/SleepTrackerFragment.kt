@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -28,6 +29,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
+import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -36,7 +38,7 @@ import com.google.android.material.snackbar.Snackbar
  * a database. Cumulative data is displayed in a simple scrollable TextView.
  * (Because we have not learned about RecyclerView yet.)
  */
-class SleepTrackerFragment : Fragment() {
+class SleepTrackerFragment : Fragment(), SleepNightAdapter.Listener {
 
     /**
      * Called when the Fragment is ready to display content to the screen.
@@ -88,7 +90,7 @@ class SleepTrackerFragment : Fragment() {
             }
         }
 
-        val  adapter = SleepNightAdapter()
+        val  adapter = SleepNightAdapter(this)
         binding.sleepList.adapter = adapter
 
         sleepTrackerViewModel.nights.observe(viewLifecycleOwner) {
@@ -101,5 +103,10 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepList.layoutManager = manager
 
         return binding.root
+    }
+
+    override fun onClick(item: SleepNight) {
+      // Toast.makeText(this, "${item.nightId}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "${item.nightId}", Toast.LENGTH_LONG).show()
     }
 }

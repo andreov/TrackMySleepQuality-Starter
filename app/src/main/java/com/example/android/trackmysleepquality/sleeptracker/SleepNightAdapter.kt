@@ -11,7 +11,7 @@ import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemSleepNightBinding
 
-class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
+class SleepNightAdapter(val listener:Listener) : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
 //    var data = listOf<SleepNight>()  // не нужен если ListAdapter
 //        set(value) {
@@ -21,7 +21,7 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
 
     class ViewHolder private constructor(val binding: ListItemSleepNightBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: SleepNight) {
+        fun bind(item: SleepNight, listener: Listener) {
             val res = itemView.context.resources
             //binding.sleepLength.text =
                 //convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
@@ -37,6 +37,9 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
                     else -> R.drawable.ic_sleep_active
                 }
             )
+            itemView.setOnClickListener {
+                listener.onClick(item)
+            }
         }
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
@@ -54,7 +57,11 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) // metod ListAdapter
-        holder.bind(item)
+        holder.bind(item, listener)
+    }
+
+    interface Listener{
+        fun onClick(item: SleepNight)
     }
 
     //override fun getItemCount(): Int = data.size  // не нужен если ListAdapter
@@ -69,4 +76,6 @@ class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
     override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
         return oldItem == newItem
     }
+
+
 }
